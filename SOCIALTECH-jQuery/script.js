@@ -27,7 +27,21 @@ $(function () {
   
     // 入力チェックをした結果をresultに格納
     let result = inputCheck();
+
+    // エラー判定とメッセージを取得
+    let error = result.error;
+    let message = result.message;
+
+    // エラーが無かったらフォームを送信する
+    if (error == false) {
+        // フォーム送信は実際には行わず、送信成功メッセージのみ表示する
+        alert('お問い合わせを送信しました。')
+      } else {
+        // エラーメッセージを表示する
+        alert(message);
+      }
     });
+
     // フォーカスが外れたとき（blur）にフォームの入力チェックをする
     $('#name').blur(function () {
     inputCheck();
@@ -109,6 +123,28 @@ $(function () {
         // エラーなし
         $('#tel').css('background-color', '#fafafa');
     }
+
+    // 個人情報のチェックボックスのチェック
+    if ($('#agree').prop('checked') == false) {
+        error = true;
+        message += '個人情報の取り扱いについてご同意いただける場合は、チェックボックスにチェックしてください。\n';
+      }
+  
+       // エラーの有無で送信ボタンを切り替え
+       if (error == true) {
+         $('#submit').attr('src', 'images/button-submit.png');
+       } else {
+         $('#submit').attr('src', 'images/button-submit-blue.png');
+       }
+
+       // オブジェクトでエラー判定とメッセージを返す
+       result = {
+        error: error,
+        message: message
+       }
+
+       // 戻り値としてエラーがあるかどうかを返す
+       return result;
    
     }
 });
